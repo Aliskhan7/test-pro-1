@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect, useState} from "react";
+
 
 function App() {
+    const [data, setData] = useState([]);
+
+    useEffect(() =>{
+        fetch("https://jsonplaceholder.typicode.com/todos")
+            .then((res) =>{
+                return res.json()
+            })
+            .then((arr) => {
+                setData(arr);
+            })
+    }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ul className='list'>
+        {data.map((item, index)=> {
+            return(
+                <li key={index}  className='list-item'>
+                    <div>
+                        Номер: {item.id}
+                    </div>
+                    <div>
+                        Заголовок: {item.title}
+                    </div>
+                    <div>
+                        Статус: {item.completed === true ? 'Да' : 'Нет'}
+                    </div>
+                </li>
+            )
+        })}
+    </ul>
   );
 }
 
